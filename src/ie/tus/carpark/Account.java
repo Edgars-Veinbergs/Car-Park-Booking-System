@@ -1,8 +1,10 @@
 package ie.tus.carpark;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Account extends JFrame {
+public class Account extends JFrame implements ActionListener{
 
 	private JLabel title;
 	
@@ -30,9 +32,11 @@ public class Account extends JFrame {
 	private JPanel centerPanel;
 	private JPanel buttonPanel;
 	
+	
+	
 	public Account() {
 		
-		setSize(400,350);
+		setSize(400,175);
 		
 		titlePanel = new JPanel();
 		centerPanel = new JPanel(new GridLayout(3,2,6,6));
@@ -45,8 +49,23 @@ public class Account extends JFrame {
 		loginPasswordField = new JTextField("Enter Password Here..");
 		loginButton = new JButton("Login");
 		createAccountButton =  new JButton("Create an Account");
+		registerPassword = new JLabel("Password: ");
+		registerConfirmPassword = new JLabel("Confirm Password");
+		registerPasswordConfirmField = new JTextField("Confirm Password Here..");
 		registerButton = new JButton("Reigster");
 		
+	
+		setLoginScreen();
+		
+		createAccountButton.addActionListener(this);
+		setVisible(true);
+		
+	}
+	
+	public void setLoginScreen() {
+		title.setText("Login");
+		buttonPanel.remove(registerButton);
+		centerPanel.remove(registerConfirmPassword); centerPanel.remove(registerPasswordConfirmField);
 		titlePanel.add(title,BorderLayout.CENTER);
 		centerPanel.add(loginUsername); centerPanel.add(loginUsernameField);
 		centerPanel.add(loginPassword); centerPanel.add(loginPasswordField);
@@ -54,12 +73,38 @@ public class Account extends JFrame {
 		buttonPanel.add(loginButton);
 		buttonPanel.add(createAccountButton);
 		
+		add(titlePanel,BorderLayout.NORTH);
+		add(centerPanel,BorderLayout.CENTER);
+		add(buttonPanel,BorderLayout.SOUTH);
+		repaint();
+	}
+	
+	public void setRegisterScreen() {
+		title.setText("Register");
+		buttonPanel.remove(loginButton);
+		buttonPanel.remove(createAccountButton);
+		titlePanel.add(title,BorderLayout.CENTER);
+		centerPanel.add(loginUsername); centerPanel.add(loginUsernameField);
+		centerPanel.add(loginPassword); centerPanel.add(loginPasswordField);
+		centerPanel.add(registerConfirmPassword); centerPanel.add(registerPasswordConfirmField);
+		buttonPanel.add(registerButton);
 		
 		add(titlePanel,BorderLayout.NORTH);
 		add(centerPanel,BorderLayout.CENTER);
 		add(buttonPanel,BorderLayout.SOUTH);
-		setVisible(true);
+		repaint();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == createAccountButton) {
+			System.out.println("Clicked");
+			setRegisterScreen();
+			
+		}
 		
 	}
+	
+
 	
 }
