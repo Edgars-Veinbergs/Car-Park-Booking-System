@@ -12,7 +12,10 @@ public class CarParkUI extends JFrame implements ActionListener {
 		super("Car Park UI");
 		
 		setSize(400,350);
+		
+		
 		setVisible(true);
+		Account newAcc = new Account();
 	}
 	
 

@@ -31,12 +31,11 @@ public class Account extends JFrame {
 	private JPanel buttonPanel;
 	
 	public Account() {
-		super("Authorization");
 		
 		setSize(400,350);
 		
 		titlePanel = new JPanel();
-		centerPanel = new JPanel(new GridLayout(4,2));
+		centerPanel = new JPanel(new GridLayout(3,2,6,6));
 		buttonPanel = new JPanel();
 		
 		title = new JLabel("Log In");
@@ -44,8 +43,23 @@ public class Account extends JFrame {
 		loginPassword = new JLabel("Password: ");
 		loginUsernameField = new JTextField("Enter Username Here..");
 		loginPasswordField = new JTextField("Enter Password Here..");
+		loginButton = new JButton("Login");
+		createAccountButton =  new JButton("Create an Account");
+		registerButton = new JButton("Reigster");
 		
+		titlePanel.add(title,BorderLayout.CENTER);
+		centerPanel.add(loginUsername); centerPanel.add(loginUsernameField);
+		centerPanel.add(loginPassword); centerPanel.add(loginPasswordField);
+		
+		buttonPanel.add(loginButton);
+		buttonPanel.add(createAccountButton);
+		
+		
+		add(titlePanel,BorderLayout.NORTH);
+		add(centerPanel,BorderLayout.CENTER);
+		add(buttonPanel,BorderLayout.SOUTH);
 		setVisible(true);
+		
 	}
 	
 }
