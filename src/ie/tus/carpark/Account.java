@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class Account extends JFrame implements ActionListener{
 
@@ -31,7 +33,8 @@ public class Account extends JFrame implements ActionListener{
 	private JPanel titlePanel;
 	private JPanel centerPanel;
 	private JPanel buttonPanel;
-	
+	private String typedPassword = "";
+	private String typedConfirmPassword = "";
 	
 	
 	public Account() {
@@ -60,6 +63,30 @@ public class Account extends JFrame implements ActionListener{
 		createAccountButton.addActionListener(this);
 		setVisible(true);
 		
+		registerButton.addActionListener(this);
+		loginUsernameField.addActionListener(this);
+		loginPasswordField.addActionListener(this);
+		registerPasswordConfirmField.addActionListener(this);
+		
+		loginPasswordField.addKeyListener(new KeyListener() { 
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char typed = e.getKeyChar();
+				typedPassword = typedPassword+typed;
+				e.consume();
+				loginPasswordField.setText(loginPasswordField.getText() + "*");
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+		});
 	}
 	
 	public void setLoginScreen() {
@@ -101,7 +128,21 @@ public class Account extends JFrame implements ActionListener{
 			System.out.println("Clicked");
 			setRegisterScreen();
 			
-		}
+		} else if (e.getSource() == registerButton) {
+			String usernameText = loginUsernameField.getText();
+			String passwordText = loginPasswordField.getText();
+			String confirmPasswordText = registerPasswordConfirmField.getText();
+			System.out.println("Register");
+			if (!usernameText.equals("Enter Username Here..") && !passwordText.equals("Enter Password Here..")) {
+				if (passwordText.equals(confirmPasswordText)) {
+					setLoginScreen();
+					System.out.println("Creating Account: \nUsername: "+usernameText+"\nPassword: "+passwordText);
+				} else {
+					JOptionPane.showInternalMessageDialog(null,"Password does not match..");
+				}
+			}
+			
+		} 
 		
 	}
 	
