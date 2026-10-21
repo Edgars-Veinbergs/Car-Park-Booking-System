@@ -35,7 +35,8 @@ public class Account extends JFrame implements ActionListener{
 	private JPanel buttonPanel;
 	private String typedPassword = "";
 	private String typedConfirmPassword = "";
-	
+	private boolean deleting = false;
+	private int charsPassword = 0;
 	
 	public Account() {
 		
@@ -68,23 +69,90 @@ public class Account extends JFrame implements ActionListener{
 		loginPasswordField.addActionListener(this);
 		registerPasswordConfirmField.addActionListener(this);
 		
-		loginPasswordField.addKeyListener(new KeyListener() { 
+		registerPasswordConfirmField.addKeyListener(new KeyListener() { 
 			@Override
 			public void keyTyped(KeyEvent e) {
+				if (deleting) { 
+					if (registerPasswordConfirmField.getText().length() > 0) {
+						typedConfirmPassword = typedConfirmPassword.substring(0,registerPasswordConfirmField.getText().length()-1); 						
+					}
+
+					return;
+				}
+				registerPasswordConfirmField.setText("");
+				System.out.println(e.getKeyChar());
+				System.out.println("Typed");
 				char typed = e.getKeyChar();
-				typedPassword = typedPassword+typed;
+				typedConfirmPassword = typedConfirmPassword+typed;
 				e.consume();
-				loginPasswordField.setText(loginPasswordField.getText() + "*");
+		
+				for (int i = 0; i < typedConfirmPassword.length(); i++) {
+					registerPasswordConfirmField.setText(registerPasswordConfirmField.getText() + "*");
+				}
+
+			
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == e.VK_BACK_SPACE) {
+					deleting = true;
 				
+					
+				}
 			}
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
 				
+				if (e.getKeyCode() == e.VK_BACK_SPACE) {
+					deleting = false;
+				}
+			
+			}
+		});
+		
+		
+		loginPasswordField.addKeyListener(new KeyListener() { 
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (deleting) { 
+					if (loginPasswordField.getText().length() > 0) {
+						typedPassword = typedPassword.substring(0,loginPasswordField.getText().length()-1); 						
+					}
+
+					return;
+				}
+				loginPasswordField.setText("");
+				System.out.println(e.getKeyChar());
+				System.out.println("Typed");
+				char typed = e.getKeyChar();
+				typedPassword = typedPassword+typed;
+				e.consume();
+				charsPassword++;
+				for (int i = 0; i < typedPassword.length(); i++) {
+					loginPasswordField.setText(loginPasswordField.getText() + "*");
+				}
+
+			
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == e.VK_BACK_SPACE) {
+					deleting = true;
+				
+					
+				}
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				if (e.getKeyCode() == e.VK_BACK_SPACE) {
+					deleting = false;
+				}
+			
 			}
 		});
 	}
@@ -134,7 +202,7 @@ public class Account extends JFrame implements ActionListener{
 			String confirmPasswordText = registerPasswordConfirmField.getText();
 			System.out.println("Register");
 			if (!usernameText.equals("Enter Username Here..") && !passwordText.equals("Enter Password Here..")) {
-				if (passwordText.equals(confirmPasswordText)) {
+				if (typedPassword.equals(typedConfirmPassword)) {
 					setLoginScreen();
 					System.out.println("Creating Account: \nUsername: "+usernameText+"\nPassword: "+passwordText);
 				} else {
