@@ -3,8 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class Account extends JFrame implements ActionListener{
 
@@ -68,6 +72,84 @@ public class Account extends JFrame implements ActionListener{
 		loginUsernameField.addActionListener(this);
 		loginPasswordField.addActionListener(this);
 		registerPasswordConfirmField.addActionListener(this);
+		loginUsernameField.addActionListener(this);
+		
+		loginUsernameField.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				loginUsernameField.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if (loginUsernameField.getText().length() == 0) { 
+					loginUsernameField.setText("Enter Username Here...");
+				}
+			} 
+			
+		});
+		
+		loginPasswordField.addFocusListener(new FocusListener() { 
+			@Override
+			public void focusGained(FocusEvent e) { 
+				loginPasswordField.setText("");
+			}
+			
+			@Override
+			public void focusLost(FocusEvent e) { 
+				if (loginPasswordField.getText().length() == 0) { 
+					loginPasswordField.setText("Enter Password Here...");
+				}
+			}
+		});
+	
+		registerPasswordConfirmField.addFocusListener(new FocusListener() { 
+			@Override
+			public void focusGained(FocusEvent e) { 
+				registerPasswordConfirmField.setText("");
+			}
+			
+			@Override
+			public void focusLost(FocusEvent e) { 
+				if (registerPasswordConfirmField.getText().length() == 0) { 
+					registerPasswordConfirmField.setText("Confirm Password Here...");
+				}
+			}
+		});
+		
+		loginUsernameField.addMouseListener(new MouseListener() { 
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				loginUsernameField.setText("");
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		registerPasswordConfirmField.addKeyListener(new KeyListener() { 
 			@Override
@@ -99,6 +181,11 @@ public class Account extends JFrame implements ActionListener{
 					deleting = true;
 				
 					
+				}
+				
+				if (e.getKeyCode() == e.VK_ENTER) {
+					e.consume();
+					register();
 				}
 			}
 			
@@ -141,7 +228,7 @@ public class Account extends JFrame implements ActionListener{
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == e.VK_BACK_SPACE) {
 					deleting = true;
-				
+		
 					
 				}
 			}
@@ -155,6 +242,30 @@ public class Account extends JFrame implements ActionListener{
 			
 			}
 		});
+	}
+	
+	
+	public void register() { 
+		String usernameText = loginUsernameField.getText();
+		String passwordText = loginPasswordField.getText();
+		String confirmPasswordText = registerPasswordConfirmField.getText();
+		System.out.println("Register");
+		if (!usernameText.equals("Enter Username Here..") && !passwordText.equals("Enter Password Here..")) {
+			if (typedPassword.equals(typedConfirmPassword)) {
+				setLoginScreen();
+				System.out.println("Creating Account: \nUsername: "+usernameText+"\nPassword: "+passwordText);
+			} else {
+				typedPassword = "";
+				typedConfirmPassword = "";
+				loginPasswordField.setText("");
+				registerPasswordConfirmField.setText("");
+				JOptionPane.showInternalMessageDialog(null,"Password does not match..");
+			}
+		}
+		
+		loginUsernameField.setText("Enter Username Here..");
+		loginPasswordField.setText("Enter Password Here..");
+		registerPasswordConfirmField.setText("");
 	}
 	
 	public void setLoginScreen() {
@@ -197,18 +308,7 @@ public class Account extends JFrame implements ActionListener{
 			setRegisterScreen();
 			
 		} else if (e.getSource() == registerButton) {
-			String usernameText = loginUsernameField.getText();
-			String passwordText = loginPasswordField.getText();
-			String confirmPasswordText = registerPasswordConfirmField.getText();
-			System.out.println("Register");
-			if (!usernameText.equals("Enter Username Here..") && !passwordText.equals("Enter Password Here..")) {
-				if (typedPassword.equals(typedConfirmPassword)) {
-					setLoginScreen();
-					System.out.println("Creating Account: \nUsername: "+usernameText+"\nPassword: "+passwordText);
-				} else {
-					JOptionPane.showInternalMessageDialog(null,"Password does not match..");
-				}
-			}
+			register();
 			
 		} 
 		
